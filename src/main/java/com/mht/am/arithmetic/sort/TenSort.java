@@ -46,7 +46,7 @@ public class TenSort {
 //        radix(arr);
 
         //10.计数
-        count(arr);
+//        count(arr);
 
 
         //打印
