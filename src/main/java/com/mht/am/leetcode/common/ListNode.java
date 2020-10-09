@@ -9,5 +9,16 @@ package com.mht.am.leetcode.common;
 public class ListNode {
     public int val;
     public ListNode next;
-    ListNode(int x) { val = x; }
+    public ListNode(int x) { val = x; }
+
+    public ListNode(int[] arr){
+        ListNode temp = new ListNode(0);
+        ListNode root=temp;
+        for (int i = 0; i <arr.length ; i++) {
+            temp.next=new ListNode(arr[i]);
+            temp=temp.next;
+        }
+        this.next=root.next.next;
+        this.val=root.next.val;
+    }
 }
