@@ -1,5 +1,7 @@
 package com.mht.am.leetcode.common;
 
+import java.util.List;
+
 /**
  * @classname: ListNode
  * @description:
@@ -11,6 +13,7 @@ public class ListNode {
     public ListNode next;
     public ListNode(int x) { val = x; }
 
+
     public ListNode(int[] arr){
         ListNode temp = new ListNode(0);
         ListNode root=temp;
@@ -20,5 +23,6 @@ public class ListNode {
         }
         this.next=root.next.next;
         this.val=root.next.val;
+
     }
 }

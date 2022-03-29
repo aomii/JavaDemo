@@ -29,7 +29,9 @@ public class CyclicBarrierTest {
                 try {
                     Thread.sleep(1000);
                     System.out.println(Thread.currentThread().getName() + " 到达栅栏 A");
-                    barrier.await();
+                    barrier.await();//最后一个线程到达这就执行  System.out.println(Thread.currentThread().getName() + " 完成最后任务");
+                                    // 然后并发执行到下个await（）
+
                     System.out.println(Thread.currentThread().getName() + " 冲破栅栏 A");
 
                     Thread.sleep(2000);
