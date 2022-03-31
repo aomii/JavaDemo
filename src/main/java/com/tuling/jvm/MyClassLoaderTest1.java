@@ -7,7 +7,10 @@ import java.lang.reflect.Method;
  * 
  *
  * @param  // TODO: 2022/3/29  打破双亲委派机制,
- *              MyClassLoaderTest：需要先删除target下的com.tuling.jvm.User1.class 文件 ，才能用到自定义加载器
+ *              MyClassLoaderTest：需要先删除target下的com.tuling.jvm.User1.class 文件 ，才能用到自定义加载器，
+ *              把user1.class 添加D:/test/com/tuling/jvm/user1.class
+ *
+
  *              MyClassLoaderTest1：（打破双亲委派机制），不需要删除target下的com.tuling.jvm.User1.class 文件 ，就可以用到自定义加载器
  * @author ao921 
  * @date 2022/3/29 18:21 
