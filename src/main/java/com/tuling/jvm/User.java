@@ -11,6 +11,13 @@ public class User {
     private int id;
     private String name;
 
+    public User() {
+    }
+
+    public User(int id, String name) {
+        this.id = id;
+        this.name = name;
+    }
 
     public int getId() {
         return id;
@@ -30,5 +37,10 @@ public class User {
 
     public void sout(){
         System.out.println("=======自己的加载器加载类调用方法======");
+    }
+
+    @Override
+    protected void finalize() throws Throwable {
+        System.out.println(id+"：即将被回收");
     }
 }
