@@ -41,6 +41,6 @@ public class User {
 
     @Override
     protected void finalize() throws Throwable {
-        System.out.println(id+"：即将被回收");
+//        System.out.println(id+"：即将被回收");
     }
 }
