@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.aoming.fkh.mapper.TrackMapper">
+
+
+    <!--&lt;!&ndash; 通用查询映射结果 &ndash;&gt;-->
+    <!--<resultMap id="VehicleResultMap" type="com.aoming.fkh.entity.po.LogisticsDriverTrack">-->
+    <!--    <result column="id" property="id"/>-->
+    <!--    <result column="deleted" property="deleted"/>-->
+    <!--    <result column="tenant_id" property="tenantId"/>-->
+    <!--    <result column="driver_name" property="driverName"/>-->
+    <!--    <result column="driver_phone" property="driverPhone"/>-->
+    <!--    <result column="driver_pic" property="driverPic"/>-->
+    <!--    <result column="idcard_no" property="idcardNo"/>-->
+    <!--    <result column="idcard_verify" property="idcardVerify"/>-->
+    <!--    <result column="idcard_pic" property="idcardPic"/>-->
+    <!--    <result column="idcard_pic_back" property="idcardPicBack"/>-->
+    <!--    <result column="idcard_valid_date" property="idcardValidDate"/>-->
+    <!--    <result column="idcard_invalid_date" property="idcardInvalidDate"/>-->
+    <!--    <result column="license_no" property="licenseNo"/>-->
+    <!--    <result column="license_type" property="licenseType"/>-->
+    <!--    <result column="license_pic" property="licensePic"/>-->
+    <!--    <result column="license_pic_back" property="licensePicBack"/>-->
+    <!--    <result column="license_get_date" property="licenseGetDate"/>-->
+    <!--    <result column="license_valid_date" property="licenseValidDate"/>-->
+    <!--    <result column="license_invalid_date" property="licenseInvalidDate"/>-->
+    <!--    <result column="qualified_no" property="qualifiedNo"/>-->
+    <!--    <result column="qualified_pic" property="qualifiedPic"/>-->
+    <!--    <result column="qualified_get_date" property="qualifiedGetDate"/>-->
+    <!--    <result column="qualified_valid_date" property="qualifiedValidDate"/>-->
+    <!--    <result column="qualified_invalid_date" property="qualifiedInvalidDate"/>-->
+    <!--    <result column="is_free" property="isFree"/>-->
+    <!--    <result column="created_by" property="createdBy"/>-->
+    <!--    <result column="created_time" property="createdTime"/>-->
+    <!--    <result column="updated_by" property="updatedBy"/>-->
+    <!--    <result column="updated_time" property="updatedTime"/>-->
+    <!--</resultMap>-->
+
+    <select id="selectVehicleNos" resultType="string">
+        select
+            distinct  vehicle_plate_no
+        from logistics_driver_track
+    </select>
+
+
+</mapper>

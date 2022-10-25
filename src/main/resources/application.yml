@@ -1,0 +1,37 @@
+server:
+  servlet:
+    context-path: /api
+  port: 8080
+
+spring:
+  datasource:
+    url: ${DB_JDBC_URL:jdbc:mysql://127.0.0.1:3306/crecgec_logistics_dev1.2?useUnicode=true&characterEncoding=UTF-8&serverTimezone=Asia/Shanghai&useSSL=false&allowMultiQueries=true}
+    username: ${DB_USER:root}
+    password: ${DB_PASSWORD:root}
+    driver-class-name: ${DB_DRIVER_CLASS:com.mysql.jdbc.Driver}
+
+  servlet:
+    multipart:
+      enabled: true #是否启用http上传处理
+      max-request-size: 200MB #设置总上传的数据大小，最大请求文件的大小
+      max-file-size: 200MB #设置单个文件最大长度
+      file-size-threshold: 20MB #当文件达到多少时进行磁盘写入
+
+mybatis-plus:
+  # xml文件路径
+  mapper-locations: classpath:mapper/*.xml
+  # 实体类路径
+  type-aliases-package: com.aoming.fkh.entity
+  configuration:
+    # 驼峰转换
+    map-underscore-to-camel-case: true
+    # 是否开启缓存
+    cache-enabled: false
+#    # 打印sql
+#    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+  # 全局配置
+  global-config:
+    # 数据库字段驼峰下划线转换
+    db-column-underline: true
+    # id自增类型(数据库id自增)
+    id-type: 0
