@@ -44,6 +44,7 @@ public class TrjCompressor2 {
         LogisticsDriverTrack prev = new LogisticsDriverTrack();
         prev.setCenterLat(0.0);
         prev.setCenterLng(0.0);
+        prev.setUploadTime(0L);
 
         for (int i = 0; i < points.size(); i++) {
             if (i > 0) {
@@ -51,7 +52,7 @@ public class TrjCompressor2 {
             }
             write(output, points.get(i).getCenterLat(), prev.getCenterLat());
             write(output, points.get(i).getCenterLng(), prev.getCenterLng());
-            // write(output, points.get(i).getTimestamp(), prev.getTimestamp());
+            write(output, points.get(i).getUploadTime(), prev.getUploadTime());
 
         }
         return toASCII(output);
@@ -71,12 +72,18 @@ public class TrjCompressor2 {
             lngD = tuple.result;
             i = tuple.index;
 
+            tuple = read(trjCode, i);
+            timestampD = tuple.result;
+            i = tuple.index;
+
             lat += latD;
             lng += lngD;
+            timestamp+=timestampD;
 
             LogisticsDriverTrack point = new LogisticsDriverTrack();
             point.setCenterLat((double) lat / factor);
             point.setCenterLng((double) lng / factor);
+            point.setUploadTime(timestamp);
             points.add(point);
         }
         return points;

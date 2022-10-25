@@ -8,6 +8,7 @@ import com.aoming.fkh.entity.po.LogisticsDriverTrackHistory;
 import com.aoming.fkh.mapper.ClassMapper;
 import com.aoming.fkh.mapper.TrackHistoryMapper;
 import com.aoming.fkh.mapper.TrackMapper;
+import com.aoming.fkh.optimize.track_compress.TripDetailData;
 import com.aoming.fkh.optimize.track_compress.TrjCompressor;
 import com.aoming.fkh.optimize.track_compress.ZipHelper;
 import com.aoming.fkh.optimize.track_sparse.GisDouglasUtil2;
@@ -20,8 +21,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
+import cn.hutool.json.JSONUtil;
 import lombok.extern.slf4j.Slf4j;
 
 @Component
@@ -47,7 +50,8 @@ public class ClassVoServiceImpl extends ServiceImpl<ClassMapper, ClassPojo> impl
         LogisticsDriverTrackHistory history = histories.get(0);
         TrjCompressor2 trjCompressor = new TrjCompressor2(6);
         histories.forEach(historie->{
-            List<LogisticsDriverTrack> tracks = trjCompressor.decode(historie.getCompressContent());
+            String encode=ZipHelper.decompress( historie.getCompressContent());
+            List<LogisticsDriverTrack> tracks = trjCompressor.decode(encode);
             result.addAll(tracks);
         });
         result.forEach(track->{
@@ -55,6 +59,7 @@ public class ClassVoServiceImpl extends ServiceImpl<ClassMapper, ClassPojo> impl
             track.setDriverId(history.getDriverId());
             track.setWaybillId(history.getWaybillId());
         });
+        log.info(System.currentTimeMillis()+"");
         return result;
     }
 
@@ -70,10 +75,12 @@ public class ClassVoServiceImpl extends ServiceImpl<ClassMapper, ClassPojo> impl
 
 
         String encode = trjCompressor.encode(tracks);
-        log.info("第一次压缩后：{}",encode);
 
         String zipCompress = ZipHelper.compress(encode);
         log.info("第二次压缩后：{}",zipCompress);
+
+
+
 
         LogisticsDriverTrackHistory history = new LogisticsDriverTrackHistory();
         LogisticsDriverTrack track = tracks.get(0);
@@ -83,7 +90,16 @@ public class ClassVoServiceImpl extends ServiceImpl<ClassMapper, ClassPojo> impl
         history.setCompressContent(zipCompress);
         history.setCompressBeginTime(track.getUploadTime());
         history.setCompressEndTime(tracks.get(tracks.size()-1).getUploadTime());
+        history.setCreatedTime(new Date());
         this.trackHistoryMapper.insert(history);
+
+
+        System.out.println("=============解压=================================================");
+        encode = ZipHelper.decompress(zipCompress);
+
+        List<LogisticsDriverTrack> decode = trjCompressor.decode(encode);
+        System.out.println(JSONUtil.toJsonStr(decode));
+
     }
 
 

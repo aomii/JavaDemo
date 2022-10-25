@@ -7,6 +7,7 @@ import com.baomidou.mybatisplus.annotation.TableName;
 import java.util.Date;
 
 import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -35,9 +36,8 @@ public class BaseTrack<T> {
     /** 中心点坐标经度 */
     private Double centerLng;
 
-
-    /** upload时间 */
-    private Date uploadTime;
+    @ApiModelProperty(name = "当前点发生时间")
+    private Long uploadTime;
 
 
     @TableField(exist = false)

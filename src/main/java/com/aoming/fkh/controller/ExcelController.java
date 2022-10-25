@@ -18,7 +18,7 @@ import java.util.List;
 import io.swagger.annotations.ApiOperation;
 
 @RestController
-@RequestMapping("/demo")
+@RequestMapping("/track")
 public class ExcelController {
 
     @Autowired
@@ -35,4 +35,10 @@ public class ExcelController {
     public List<LogisticsDriverTrack> getHistoryLocation(@RequestBody LocationForm locationForm) {
         return  classVoService.getHistoryLocation(locationForm);
     }
+    @GetMapping("/compress")
+    public boolean compress(){
+         classVoService.compressData();
+         return true;
+    }
+
 }

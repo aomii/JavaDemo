@@ -57,8 +57,8 @@ public class LogisticsDriverTrackHistory {
     private String compressContent;
 
     /** upload时间 */
-    private Date compressBeginTime;
-    private Date compressEndTime;
+    private Long compressBeginTime;
+    private Long compressEndTime;
 
     /** 创建时间 (公共字段) */
     @TableField(fill = FieldFill.INSERT)
