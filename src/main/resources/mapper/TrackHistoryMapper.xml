@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.aoming.fkh.mapper.TrackHistoryMapper">
+
+    <!--MYSQL中group_concat有长度限制！默认1024-->
+    <!--SET GLOBAL group_concat_max_len=102400;-->
+    <!--SET SESSION group_concat_max_len=102400;-->
+    <select id="page" resultType="com.aoming.fkh.entity.po.LogisticsDriverTrackHistory">
+        select
+            id,
+            driver_id,
+            waybill_id,
+            vehicle_plate_no,
+            group_concat(compress_content separator '') compress_content,
+            compress_begin_time,
+            compress_end_time,
+            created_time
+        from (select *,row_number() over(partition by created_time order by block_offset)
+              from logistics_driver_track_history) tb
+        <where>
+            <if test="query.vehiclePlateNo!=null and query.vehiclePlateNo!=''">
+                and tb.vehicle_plate_no = #{query.vehiclePlateNo}
+            </if>
+        </where>
+        GROUP BY created_time
+
+
+
+
+    </select>
+
+
+</mapper>

@@ -44,8 +44,10 @@ public class ClassVoServiceImpl extends ServiceImpl<ClassMapper, ClassPojo> impl
 
     @Override
     public List<LogisticsDriverTrack> getHistoryLocation(LocationForm locationForm) {
-        List<LogisticsDriverTrackHistory> histories =
-            this.trackHistoryMapper.selectList(new QueryWrapper<LogisticsDriverTrackHistory>().eq(LogisticsDriverTrackHistory.VEHICLE_PLATE_NO, locationForm.getPlateNo()).orderByAsc(LogisticsDriverTrackHistory.CREATED_TIME));
+        // List<LogisticsDriverTrackHistory> histories =
+        //     this.trackHistoryMapper.selectList(new QueryWrapper<LogisticsDriverTrackHistory>().eq(LogisticsDriverTrackHistory.VEHICLE_PLATE_NO, locationForm.getPlateNo()).orderByAsc(LogisticsDriverTrackHistory.CREATED_TIME));
+        List<LogisticsDriverTrackHistory> histories=this.trackHistoryMapper.page(locationForm);
+
         List<LogisticsDriverTrack> result=new ArrayList<>();
         LogisticsDriverTrackHistory history = histories.get(0);
         TrjCompressor2 trjCompressor = new TrjCompressor2(6);
@@ -98,9 +100,9 @@ public class ClassVoServiceImpl extends ServiceImpl<ClassMapper, ClassPojo> impl
         String encode = trjCompressor.encode(list);
 
         String zipCompress = ZipHelper.compress(encode);
-        log.info("第二次压缩后：{}；长度{}",zipCompress,zipCompress.length());
-
-        int n= (int) Math.ceil(zipCompress.length()*1.0 / 1000);
+        int length = zipCompress.length();
+        log.info("第二次压缩后：{}；长度{}", zipCompress, length);
+        int n= (int) Math.ceil(length*1.0 / 1000);
         long currentTimeMillis = System.currentTimeMillis();
         for (int i = 0; i < n; i++) {
             LogisticsDriverTrackHistory history = new LogisticsDriverTrackHistory();
@@ -108,9 +110,14 @@ public class ClassVoServiceImpl extends ServiceImpl<ClassMapper, ClassPojo> impl
             history.setVehiclePlateNo(track.getVehiclePlateNo());
             history.setWaybillId(track.getWaybillId());
             history.setDriverId(track.getDriverId());
-            history.setCompressContent(zipCompress);
-            history.setCompressBeginTime(track.getUploadTime());
-            history.setCompressEndTime(tracks.get(tracks.size()-1).getUploadTime());
+            history.setCompressContent(zipCompress.substring(i*1000,i==(n-1)?length:(i+1)*1000));
+            Date beginTime = new Date();
+            beginTime.setTime(track.getUploadTime());
+            history.setCompressBeginTime(beginTime);
+
+            Date endTime = new Date();
+            endTime.setTime(tracks.get(tracks.size()-1).getUploadTime());
+            history.setCompressEndTime(endTime);
             history.setCreatedTime(currentTimeMillis);
             history.setBlockOffset(i);
             this.trackHistoryMapper.insert(history);

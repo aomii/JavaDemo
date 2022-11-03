@@ -38,7 +38,7 @@ public class LocationForm  {
     private String waybillId;
 
     @ApiParam("车牌号")
-    private String plateNo;
+    private String vehiclePlateNo;
 
     @ApiParam("开始时间")
     @JsonFormat(pattern ="yyyy-MM-dd HH:mm:ss",timezone ="GMT+8")
