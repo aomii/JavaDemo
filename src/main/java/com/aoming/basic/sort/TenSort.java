@@ -34,16 +34,16 @@ public class TenSort {
 //        xier(arr);
 
         //6.堆
-//        heap(arr);
+       // heap(arr);
 
         //7.快排
 //        quick(arr);
 
         //8.归并
-//        arr=merge(arr);
+       arr=merge(arr);
 
         //9.基数
-//        radix(arr);
+       // radix(arr);
 
         //10.计数
 //        count(arr);
@@ -221,13 +221,12 @@ public class TenSort {
     */ 
     private static void println(int[] arr,long beginTime) {
         StringBuilder sb = new StringBuilder("[");
-        for (int i:arr
-        ) {
+        for (int i=0;i< arr.length;i++) {
             sb.append(arr[i]+",");
         }
         sb.deleteCharAt(sb.length()-1).append("]");
         System.out.println(sb.toString());
-        System.out.println("用时:"+(System.nanoTime()-beginTime)+"ns");
+        System.out.println("用时22:"+(System.nanoTime()-beginTime)+"ns");
     }
 
     /**

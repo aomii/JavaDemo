@@ -14,6 +14,7 @@ import com.aoming.fkh.optimize.track_compress.ZipHelper;
 import com.aoming.fkh.optimize.track_sparse.GisDouglasUtil2;
 import com.aoming.fkh.service.ClassVoService;
 import com.aoming.fkh.utils.TrjCompressor2;
+import com.aoming.tuling.jvm.JOLSample;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 
@@ -39,7 +40,6 @@ public class ClassVoServiceImpl extends ServiceImpl<ClassMapper, ClassPojo> impl
     public String getClassName(Long id){
         ClassPojo byId = this.getById (id);
         return byId.getClassName ();
- 
     }
 
     @Override
@@ -63,45 +63,64 @@ public class ClassVoServiceImpl extends ServiceImpl<ClassMapper, ClassPojo> impl
         return result;
     }
 
+    // 测试压缩长度
+    // @Override
+    // public void compressData() {
+    //     // TODO: 2022/10/21 开启对应核数的线程去压缩轨迹
+    //     List<String> vehicleNos=this.trackMapper.selectVehicleNos();
+    //     List<LogisticsDriverTrack> list=this.trackMapper.selectList(new QueryWrapper<LogisticsDriverTrack>().eq(LogisticsDriverTrack.VEHICLE_PLATE_NO,
+    //                                                                                   vehicleNos.get(0)).orderByAsc(LogisticsDriverTrack.UPLOAD_TIME));
+    //     List<LogisticsDriverTrack> tracks = GisDouglasUtil2.douglasPeucker(list, 3);
+    //
+    //     TrjCompressor2 trjCompressor = new TrjCompressor2(6);
+    //
+    //
+    //     for (int i = 1; i <= 76; i++) {
+    //         String encode = trjCompressor.encode(tracks.subList(0,i));
+    //
+    //         String zipCompress = ZipHelper.compress(encode);
+    //         log.info("压缩后长度{}",zipCompress.length());
+    //     }
+    //
+    //
+    // }
+
     @Override
     public void compressData() {
         // TODO: 2022/10/21 开启对应核数的线程去压缩轨迹
         List<String> vehicleNos=this.trackMapper.selectVehicleNos();
         List<LogisticsDriverTrack> list=this.trackMapper.selectList(new QueryWrapper<LogisticsDriverTrack>().eq(LogisticsDriverTrack.VEHICLE_PLATE_NO,
-                                                                                      vehicleNos.get(0)).orderByAsc(LogisticsDriverTrack.UPLOAD_TIME));
-        List<LogisticsDriverTrack> tracks = GisDouglasUtil2.douglasPeucker(list, 3);
+                                                                                                                vehicleNos.get(0)).orderByAsc(LogisticsDriverTrack.UPLOAD_TIME));
+        List<LogisticsDriverTrack> tracks = GisDouglasUtil2.douglasPeucker(list, 1);
 
         TrjCompressor2 trjCompressor = new TrjCompressor2(6);
 
-
-        String encode = trjCompressor.encode(tracks);
+        String encode = trjCompressor.encode(list);
 
         String zipCompress = ZipHelper.compress(encode);
-        log.info("第二次压缩后：{}",zipCompress);
+        log.info("第二次压缩后：{}；长度{}",zipCompress,zipCompress.length());
 
-
-
-
-        LogisticsDriverTrackHistory history = new LogisticsDriverTrackHistory();
-        LogisticsDriverTrack track = tracks.get(0);
-        history.setVehiclePlateNo(track.getVehiclePlateNo());
-        history.setWaybillId(track.getWaybillId());
-        history.setDriverId(track.getDriverId());
-        history.setCompressContent(zipCompress);
-        history.setCompressBeginTime(track.getUploadTime());
-        history.setCompressEndTime(tracks.get(tracks.size()-1).getUploadTime());
-        history.setCreatedTime(new Date());
-        this.trackHistoryMapper.insert(history);
-
+        int n= (int) Math.ceil(zipCompress.length()*1.0 / 1000);
+        long currentTimeMillis = System.currentTimeMillis();
+        for (int i = 0; i < n; i++) {
+            LogisticsDriverTrackHistory history = new LogisticsDriverTrackHistory();
+            LogisticsDriverTrack track = tracks.get(0);
+            history.setVehiclePlateNo(track.getVehiclePlateNo());
+            history.setWaybillId(track.getWaybillId());
+            history.setDriverId(track.getDriverId());
+            history.setCompressContent(zipCompress);
+            history.setCompressBeginTime(track.getUploadTime());
+            history.setCompressEndTime(tracks.get(tracks.size()-1).getUploadTime());
+            history.setCreatedTime(currentTimeMillis);
+            history.setBlockOffset(i);
+            this.trackHistoryMapper.insert(history);
+        }
+        
 
         System.out.println("=============解压=================================================");
         encode = ZipHelper.decompress(zipCompress);
 
         List<LogisticsDriverTrack> decode = trjCompressor.decode(encode);
         System.out.println(JSONUtil.toJsonStr(decode));
-
     }
-
-
-
 }

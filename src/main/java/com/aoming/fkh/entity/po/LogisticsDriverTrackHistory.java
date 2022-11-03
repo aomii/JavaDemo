@@ -61,8 +61,8 @@ public class LogisticsDriverTrackHistory {
     private Long compressEndTime;
 
     /** 创建时间 (公共字段) */
-    @TableField(fill = FieldFill.INSERT)
-    private Date createdTime;
+    // @TableField(fill = FieldFill.INSERT)
+    private Long createdTime;
 
-
+    private int blockOffset;
 }

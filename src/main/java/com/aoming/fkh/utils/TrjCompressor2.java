@@ -27,6 +27,9 @@ import com.aoming.fkh.entity.po.LogisticsDriverTrack;
 import java.util.ArrayList;
 import java.util.List;
 
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 /**
  * @author Wang
  * @Date 2022/9/1
@@ -40,6 +43,7 @@ public class TrjCompressor2 {
 
 
     public String encode(List<LogisticsDriverTrack> points) {
+        log.info("轨迹条数{}",points.size());
         List<Long> output = new ArrayList<>();
         LogisticsDriverTrack prev = new LogisticsDriverTrack();
         prev.setCenterLat(0.0);

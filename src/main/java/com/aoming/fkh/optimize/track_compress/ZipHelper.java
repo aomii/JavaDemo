@@ -35,7 +35,7 @@ public class ZipHelper {
      */
     public static String compress(String data) {
         byte[] bytes = ZipUtil.gzip(data, "UTF8");
-        System.out.println("zip压缩后:"+new String(bytes));
+        // System.out.println("zip压缩后:"+new String(bytes));
         return Base64.encode(bytes);
     }
     /**
