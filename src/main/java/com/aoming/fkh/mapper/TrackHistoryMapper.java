@@ -1,7 +1,6 @@
 package com.aoming.fkh.mapper;
 
 import com.aoming.fkh.entity.form.LocationForm;
-import com.aoming.fkh.entity.po.LogisticsDriverTrack;
 import com.aoming.fkh.entity.po.LogisticsDriverTrackHistory;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 

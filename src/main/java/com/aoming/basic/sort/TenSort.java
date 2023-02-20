@@ -31,7 +31,7 @@ public class TenSort {
 //        binaryInsert(arr);
 
         //5.希尔
-//        xier(arr);
+       xier(arr);
 
         //6.堆
        // heap(arr);
@@ -40,7 +40,7 @@ public class TenSort {
 //        quick(arr);
 
         //8.归并
-       arr=merge(arr);
+       // arr=merge(arr);
 
         //9.基数
        // radix(arr);

@@ -9,6 +9,10 @@ spring:
     username: ${DB_USER:root}
     password: ${DB_PASSWORD:root}
     driver-class-name: ${DB_DRIVER_CLASS:com.mysql.jdbc.Driver}
+  data:
+    mongodb:
+#      uri: ${MONGODB_URL:mongodb://supervision:fkhwl123456@192.168.2.91:27017/supervision_dev}
+      uri: ${MONGODB_URL:mongodb://192.168.8.142:27017/track}
 
   servlet:
     multipart:

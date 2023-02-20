@@ -1,7 +1,7 @@
 package com.aoming.fkh.controller;
 
 import com.aoming.fkh.entity.form.LocationForm;
-import com.aoming.fkh.entity.po.LogisticsDriverTrack;
+import com.aoming.fkh.entity.zj.TrackDetailDTO;
 import com.aoming.fkh.service.ClassVoService;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,7 +19,7 @@ import io.swagger.annotations.ApiOperation;
 
 @RestController
 @RequestMapping("/track")
-public class ExcelController {
+public class LocationController {
 
     @Autowired
     private ClassVoService classVoService;
@@ -29,11 +29,11 @@ public class ExcelController {
         return classVoService.getClassName (id);
     }
 
-    @PostMapping("/getHistoryLocation")
+    @PostMapping("/getHistoryLocation/{id}")
     @ResponseBody
     @ApiOperation("获取车辆历史轨迹")
-    public List<LogisticsDriverTrack> getHistoryLocation(@RequestBody LocationForm locationForm) {
-        return  classVoService.getHistoryLocation(locationForm);
+    public List<TrackDetailDTO> getHistoryLocation(@PathVariable("id")Long waybillId) {
+        return  classVoService.getHistoryLocation(waybillId);
     }
     @GetMapping("/compress")
     public boolean compress(){

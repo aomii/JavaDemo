@@ -1,9 +1,8 @@
 package com.aoming.fkh.optimize.track_sparse;
 
-import com.aoming.fkh.entity.base.BaseTrack;
+import com.aoming.fkh.entity.base.BaseTrack0;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
@@ -24,7 +23,7 @@ public class GisDouglasUtil2 {
      * @param point2 点2
      * @return double
      */
-    private static double calculationDistance(BaseTrack point1, BaseTrack point2) {
+    private static double calculationDistance(BaseTrack0 point1, BaseTrack0 point2) {
         double lat1 = point1.getCenterLat();
         double lat2 = point2.getCenterLat();
         double lng1 = point1.getCenterLng();
@@ -47,7 +46,7 @@ public class GisDouglasUtil2 {
      * @param center 中心
      * @return double
      */
-    private static double distToSegment(BaseTrack start, BaseTrack end, BaseTrack center) {
+    private static double distToSegment(BaseTrack0 start, BaseTrack0 end, BaseTrack0 center) {
         double a = Math.abs(calculationDistance(start, end));
         double b = Math.abs(calculationDistance(start, center));
         double c = Math.abs(calculationDistance(end, center));
@@ -66,12 +65,12 @@ public class GisDouglasUtil2 {
      * @param dMax       抽稀力度
      * @return List<double [ ]>
      */
-    private static List<BaseTrack> compressLine(List<? extends BaseTrack> coordinate, List<BaseTrack> result, int start, int end, int dMax) {
+    private static List<BaseTrack0> compressLine(List<? extends BaseTrack0> coordinate, List<BaseTrack0> result, int start, int end, int dMax) {
         if (start < end) {
             double maxDist = 0;
             int currentIndex = 0;
-            BaseTrack startPoint = coordinate.get(start);
-            BaseTrack endPoint = coordinate.get(end);
+            BaseTrack0 startPoint = coordinate.get(start);
+            BaseTrack0 endPoint = coordinate.get(end);
             for (int i = start + 1; i < end; i++) {
                 double currentDist = distToSegment(startPoint, endPoint, coordinate.get(i));
                 if (currentDist > maxDist) {
@@ -95,7 +94,7 @@ public class GisDouglasUtil2 {
      * @param dMax       允许最大距离误差
      * @return douglasResult 抽稀后的轨迹
      */
-    public static <T> List<T> douglasPeucker(List<? extends  BaseTrack<T>> coordinate, int dMax) {
+    public static <T> List<T> douglasPeucker(List<? extends BaseTrack0<T>> coordinate, int dMax) {
         //抽稀点数量需要大于2
         if (coordinate == null || coordinate.size() <= 2) {
             return null;
@@ -104,15 +103,15 @@ public class GisDouglasUtil2 {
         for (int i = 0; i < coordinate.size(); i++) {
             coordinate.get(i).setSort(i);
         }
-        List<BaseTrack> result = new ArrayList<>();
+        List<BaseTrack0> result = new ArrayList<>();
         result = compressLine(coordinate, result, 0, coordinate.size() - 1, dMax);
 
         result.add(coordinate.get(0));
         result.add(coordinate.get(coordinate.size() - 1));
 
-        Collections.sort(result, new Comparator<BaseTrack>() {
+        Collections.sort(result, new Comparator<BaseTrack0>() {
             @Override
-            public int compare(BaseTrack u1, BaseTrack u2) {
+            public int compare(BaseTrack0 u1, BaseTrack0 u2) {
                 if (u1.getSort() > u2.getSort()) {
                     return 1;
                 } else if (u1.getSort() < u2.getSort()) {

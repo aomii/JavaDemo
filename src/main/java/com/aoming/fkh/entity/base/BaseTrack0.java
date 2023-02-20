@@ -28,7 +28,7 @@ import lombok.experimental.Accessors;
 @NoArgsConstructor
 @Accessors(chain = true)
 @ApiModel(value = "物流司机轨迹", description = "物流司机轨迹")
-public class BaseTrack<T> {
+public class BaseTrack0<T> {
 
 
     /** 中心点坐标纬度 */

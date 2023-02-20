@@ -1,13 +1,23 @@
-package com.aoming.fkh.optimize.track_sparse;
+package com.aoming.fkh.utils;
 
-import java.util.*;
+
+
+
+
+
+import com.aoming.fkh.entity.zj.BaseTrack;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
 
 
 /**
  * 坐标处理类 GPS点的抽稀-道格拉斯算法
  *
- * @author Elinx
- * @since 2021-05-31 10:28
+ * @author aoming
+ * @since 2023-01-30 10:28
  */
 public class GisDouglasUtil {
 
@@ -18,15 +28,15 @@ public class GisDouglasUtil {
      * @param point2 点2
      * @return double
      */
-    private static double calculationDistance(double[] point1, double[] point2) {
-        double lat1 = point1[0];
-        double lat2 = point2[0];
-        double lng1 = point1[1];
-        double lng2 = point2[1];
+    private static double calculationDistance(BaseTrack point1, BaseTrack point2) {
+        double lat1 = point1.getLat();
+        double lat2 = point2.getLat();
+        double lon1 = point1.getLon();
+        double lon2 = point2.getLon();
         double radLat1 = lat1 * Math.PI / 180.0;
         double radLat2 = lat2 * Math.PI / 180.0;
         double a = radLat1 - radLat2;
-        double b = (lng1 * Math.PI / 180.0) - (lng2 * Math.PI / 180.0);
+        double b = (lon1 * Math.PI / 180.0) - (lon2 * Math.PI / 180.0);
         double s = 2 * Math.asin(Math.sqrt(Math.pow(Math.sin(a / 2), 2)
                 + Math.cos(radLat1) * Math.cos(radLat2) * Math.pow(Math.sin(b / 2), 2)));
         return s * 6370996.81;
@@ -41,7 +51,7 @@ public class GisDouglasUtil {
      * @param center 中心
      * @return double
      */
-    private static double distToSegment(double[] start, double[] end, double[] center) {
+    private static double distToSegment(BaseTrack start, BaseTrack end, BaseTrack center) {
         double a = Math.abs(calculationDistance(start, end));
         double b = Math.abs(calculationDistance(start, center));
         double c = Math.abs(calculationDistance(end, center));
@@ -60,12 +70,12 @@ public class GisDouglasUtil {
      * @param dMax       抽稀力度
      * @return List<double [ ]>
      */
-    private static List<double[]> compressLine(List<double[]> coordinate, List<double[]> result, int start, int end, int dMax) {
+    private static List<BaseTrack> compressLine(List<? extends BaseTrack> coordinate, List<BaseTrack> result, int start, int end, int dMax) {
         if (start < end) {
             double maxDist = 0;
             int currentIndex = 0;
-            double[] startPoint = coordinate.get(start);
-            double[] endPoint = coordinate.get(end);
+            BaseTrack startPoint = coordinate.get(start);
+            BaseTrack endPoint = coordinate.get(end);
             for (int i = start + 1; i < end; i++) {
                 double currentDist = distToSegment(startPoint, endPoint, coordinate.get(i));
                 if (currentDist > maxDist) {
@@ -89,37 +99,34 @@ public class GisDouglasUtil {
      * @param dMax       允许最大距离误差
      * @return douglasResult 抽稀后的轨迹
      */
-    public static List<double[]> douglasPeucker(List<double[]> coordinate, int dMax) {
+    public static <T> List<T> douglasPeucker(List<? extends  BaseTrack<T>> coordinate, int dMax) {
         //抽稀点数量需要大于2
         if (coordinate == null || coordinate.size() <= 2) {
             return null;
         }
 
-        List<double[]> coordinate2 = new ArrayList<>();
         for (int i = 0; i < coordinate.size(); i++) {
-            double[] point = Arrays.copyOf(coordinate.get(i), 3);
-            point[2] = i;
-            coordinate2.add(point);
+            coordinate.get(i).setSort(i);
         }
-        List<double[]> result = new ArrayList<>();
-        result = compressLine(coordinate2, result, 0, coordinate2.size() - 1, dMax);
+        List<BaseTrack> result = new ArrayList<>();
+        result = compressLine(coordinate, result, 0, coordinate.size() - 1, dMax);
 
-        result.add(coordinate2.get(0));
-        result.add(coordinate2.get(coordinate.size() - 1));
+        result.add(coordinate.get(0));
+        result.add(coordinate.get(coordinate.size() - 1));
 
-        Collections.sort(result, new Comparator<double[]>() {
+        Collections.sort(result, new Comparator<BaseTrack>() {
             @Override
-            public int compare(double[] u1, double[] u2) {
-                if (u1[2] > u2[2]) {
+            public int compare(BaseTrack u1, BaseTrack u2) {
+                if (u1.getSort() > u2.getSort()) {
                     return 1;
-                } else if (u1[2] < u2[2]) {
+                } else if (u1.getSort() < u2.getSort()) {
                     return -1;
                 }
                 return 0; //相等为0
             }
         });
 
-        return result;
+        return (List<T>)result;
     }
 
 }

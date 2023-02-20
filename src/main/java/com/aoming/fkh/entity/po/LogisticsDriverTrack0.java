@@ -1,20 +1,16 @@
 package com.aoming.fkh.entity.po;
 
-import com.aoming.fkh.entity.base.BaseTrack;
+import com.aoming.fkh.entity.base.BaseTrack0;
 import com.baomidou.mybatisplus.annotation.FieldFill;
-import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
-import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 
 
 import java.util.Date;
 
 import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.experimental.Accessors;
 
@@ -34,7 +30,7 @@ import lombok.experimental.Accessors;
 @Accessors(chain = true)
 @TableName("logistics_driver_track")
 @ApiModel(value = "物流司机轨迹", description = "物流司机轨迹")
-public class LogisticsDriverTrack extends BaseTrack<LogisticsDriverTrack> {
+public class LogisticsDriverTrack0 extends BaseTrack0<LogisticsDriverTrack0> {
 
     public static final String DRIVER_ID = "driver_id";
     public static final String WAYBILL_ID = "waybill_id";

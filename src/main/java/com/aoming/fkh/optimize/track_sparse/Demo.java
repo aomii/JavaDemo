@@ -74,7 +74,7 @@ public class Demo {
             }
         }
         // 抽稀算法，力度3
-        runtimeTrackList = GisDouglasUtil.douglasPeucker(runtimeTrackList, 3);
+        // runtimeTrackList = GisDouglasUtil2.douglasPeucker(runtimeTrackList, 3);
         System.out.println(JSONUtil.toJsonStr(runtimeTrackList));
     }
 }
