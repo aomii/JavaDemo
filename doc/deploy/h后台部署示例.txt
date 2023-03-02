@@ -1,0 +1,20 @@
+#脚本执行示例
+# 查看日志  tail -fn300 /mnt/syslogs/v5/test/fkh-logistics-scaffold/all.log
+# 脚手架项目记得将 更新demo项目复制到 /opt/download/fkh-logistics-scaffold/project 下   chown -R fkhservice:fkhwww demo/
+#./deploy.sh   包名  包名备份后缀
+#执行前先切换到 sudo -i  
+nohup ./deploy.sh fkh-logistics-scaffold.tar.gz 1230.bak >/dev/null 2>&1 &
+
+#执行demo后端项目发布
+nohup ./deploy_demo.sh demo.tar.gz 1230.bak >/dev/null 2>&1 &
+
+#执行logistics-aj后端项目发布
+nohup ./deploy_demo.sh fkh-logistics-api.tar.gz 0106.bak >/dev/null 2>&1 &
+
+#执行demo前端项目发布
+cp  /home/publisher/appConf.json  /opt/nginx/html/base-starter/
+
+
+nohup ./deploy_supervision.sh fkh-logistics-supervision.tar.gz 0210.bak >/dev/null 2>&1 &
+
+ tail -fn300 /mnt/syslogs/v5/test/fkh-logistics-supervision/all.log
