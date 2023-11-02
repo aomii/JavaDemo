@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+
+<body>
+<script>
+  //[[4,0,0,0,2,0,4,0,0,0,1],
+  // [3,0,0,1,1,1,1,1,2,0,1],
+  // [2,0,1,1,1,1,1,1,2,0,1]]
+  let data = [
+    { id: 1, dep: 'a', title: '11' },
+    { id: 1, dep: 'a', title: '11' },
+    { id: 1, dep: 'a', title: '131' },
+    { id: 1, dep: 'c', title: '141' },
+    { id: 2, dep: 'c', title: '141' },
+    { id: 2, dep: 'd', title: '151' },
+    { id: 3, dep: 'd', title: '151' },
+    { id: 3, dep: 'd1', title: '151' },
+    { id: 3, dep: 'e', title: '151' },
+    { id: 3, dep: 'e', title: '151' },
+    { id: 4, dep: 'f', title: '151' },
+  ];
+
+  const  oMap=new Map(Object.entries(data[0]));
+  let keys =[];
+  let keyCount=0
+  let keySum=0; //需要合并的列数，默认是全字段合并
+  for (const key of oMap.keys()) {
+    console.log(key);
+    keys[keyCount++]=key
+    keySum++;
+  }
+
+  let R =  new Array()
+  for(let i = 0; i < keySum; i++) {
+    R[i] = new Array()
+    for(let j = 0; j < data.length; j++) {
+      R[i][j] = 0;
+    }
+  }
+
+  merger(0,0,data.length-1)
+  console.log(R);
+
+
+  function merger(keyIndex,start,end){
+    if (keyIndex >= keySum) {
+      return ;
+    }
+    let fieldName=keys[keyIndex];
+    let temp = data[start][fieldName];
+    let count = 1;
+    let k = start;
+    let j = start;
+    for (let i = start+1; i <= end; i++) {
+      if (data[i][fieldName] == temp) {
+        count++;
+        R[keyIndex][j++] = 0;
+      } else {
+        R[keyIndex][j++] = count;
+        swap(keyIndex, k, j - 1);
+        merger(keyIndex+1,k,j-1);
+        count = 1;
+        k = j;
+      }
+      temp = data[i][fieldName];
+    }
+    R[keyIndex][j] = count;
+    if(k!=j){
+      swap(keyIndex, k, j);
+    }
+    merger(keyIndex+1,k,j);
+  }
+
+  function swap(index, a, b) {
+    let temp = R[index][a];
+    R[index][a] =R[index][b];
+    R[index][b] = temp;
+  }
+
+</script>
+</body>
+
+</html>
