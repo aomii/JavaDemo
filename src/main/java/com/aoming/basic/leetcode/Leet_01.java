@@ -18,7 +18,7 @@ public class Leet_01 {
     @Test
     public void test(){
         int [] mums={-1,-2,-3,-4,-5};
-        int[] result = twoSum2(mums, -8);
+        int[] result = twoSum3(mums, -8);
         for (int i : result) {
             System.out.println(i+" ");
         }
