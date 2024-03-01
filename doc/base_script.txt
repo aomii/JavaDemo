@@ -1,0 +1,35 @@
+
+-- windows
+netstat -ano | findstr 8080
+taskkill /f /pid 28808
+
+
+
+-- liunx
+
+后台打包
+sudo -i
+cd /opt/apps/wms
+mv /home/publisher/wms-system.jar /opt/apps/wms/
+mv /home/publisher/wms-business.jar .
+
+
+nohup java -jar -Xmx512m -Xms256m wms-gateway.jar   >/dev/null 2>&1 &
+nohup java -jar -Xmx512m -Xms256m wms-system.jar    >/dev/null 2>&1 &
+nohup java -jar -Xmx512m -Xms256m wms-auth.jar      >/dev/null 2>&1 &
+nohup java -jar -Xmx512m -Xms256m wms-business.jar  >/dev/null 2>&1 &
+
+
+pgrep -f wms-system
+pgrep -f wms-gateway
+pgrep -f wms-auth
+pgrep -f wms-business
+kill -9 pid
+
+
+前端
+sudo -i
+mv /home/publisher/wms-cloud-ui.zip /opt/nginx/html/
+unzip /opt/nginx/html/wms-cloud-ui.zip
+
+ mv wms-cloud-ui.zip wms-cloud-ui.zip.bak2
