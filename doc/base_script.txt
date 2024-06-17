@@ -26,6 +26,11 @@ pgrep -f wms-auth
 pgrep -f wms-business
 kill -9 pid
 
+-- liunx如何根据nginx的进程id找到配置文件
+pgerp -f nginx
+ll /proc/{pid}/exe
+{上述结果} -t      例： /usr/local/nginx/sbin/nginx -t
+
 
 前端
 sudo -i
