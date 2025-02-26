@@ -3,7 +3,6 @@ package com.aoming.basic.algorithm;
 public class LongestMountain {
     /**
      * 代码中的类名、方法名、参数名已经指定，请勿修改，直接返回方法规定的值即可
-     *
      * 最长山脉的长度
      * @param nums int整型一维数组 每个元素表示一座山的高度
      * @return int整型
