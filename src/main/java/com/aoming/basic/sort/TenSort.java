@@ -31,10 +31,10 @@ public class TenSort {
 //        binaryInsert(arr);
 
         //5.希尔
-       xier(arr);
+       // xier(arr);
 
         //6.堆
-       // heap(arr);
+       heap(arr);
 
         //7.快排
 //        quick(arr);
