@@ -1,4 +1,4 @@
-package com.aoming.interview;
+package com.aoming.interview.jiuzhouyunteng;
 
 import java.util.concurrent.*;
 import java.util.concurrent.atomic.AtomicInteger;
